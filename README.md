@@ -15,7 +15,6 @@ L'application est le site d'une agence evenementielle.
 ## Lancement de l'application
 
 - `yarn start`
-  te
 
 ## Tests
 
