@@ -16,6 +16,7 @@ const Form = ({ onSuccess, onError }) => {
     message: ''
   });
   const [error, setError] = useState('');
+  const [selectKey, setSelectKey] = useState(Date.now());
 
   const validateForm = () => {
     let isValid = true;
@@ -70,12 +71,22 @@ const Form = ({ onSuccess, onError }) => {
       setSending(true);
       try {
         await mockContactApi();
+        setFormData({
+          nom: '',
+          prenom: '',
+          email: '',
+          type: '',
+          message: ''
+        });
+        setError('');
         setSending(false);
+        setSelectKey(Date.now()); 
         onSuccess();
       } catch (err) {
         setSending(false);
         onError(err);
       }
+      setSending(false);
     },
     [formData, onSuccess, onError]
   );
@@ -99,6 +110,7 @@ const Form = ({ onSuccess, onError }) => {
             onChange={handleChange}
           />
           <Select
+            key={selectKey}
             selection={["Personel", "Entreprise"]}
             onChange={handleSelectChange}
             label="Personel / Entreprise"
