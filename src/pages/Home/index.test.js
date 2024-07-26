@@ -1,19 +1,29 @@
 import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import Home from "./index";
 
+
+
 describe("When Home is created with a Foorm", () => {
   it("a list of fields card is displayed", async () => {
     render(<Home />);
-    await screen.findByText("Email");
-    await screen.findByText("Nom");
-    await screen.findByText("Prénom");
-    await screen.findByText("Personel / Entreprise");
+    screen.debug();
+    await waitFor(() => {
+      expect(screen.getByTestId(container-form-testId)).toBeInTheDocument();
+    });
+    
+    await waitFor(() => {
+      expect(screen.getByText(/Nom/i)).toBeInTheDocument();
+      expect(screen.getByText(/Prénom/i)).toBeInTheDocument();
+      expect(screen.getByText(/Personel \/ Entreprise/i)).toBeInTheDocument();
+      expect(screen.getByText(/Email/i)).toBeInTheDocument();
+    });
   });
 
   describe("and the form on the Home page is submitted", () => {
     it("displays 'En cours', shows success message, and updates the button text", async () => {
 
       render(<Home />);
+      screen.debug(); 
 
       // Remplir les champs du formulaire
       const fields = await screen.queryAllByTestId("field-testid");
@@ -22,9 +32,10 @@ describe("When Home is created with a Foorm", () => {
       });
 
       // Simuler la sélection dans le composant Select
-      const form = screen.getByTestId("form-testid");
-      fireEvent.click(within(form).getByTestId("collapse-button-testid"));
-      fireEvent.click(screen.getByText('Personel'));
+      const form = await screen.getByTestId('container-form-testId');
+        fireEvent.click(within(form).getByTestId("collapse-button-testid"));
+        fireEvent.click(screen.getByText('Personel'));
+      
 
       // Soumettre le formulaire
       await fireEvent.click(within(form).getByTestId("button-test-id"));

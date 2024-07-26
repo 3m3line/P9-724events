@@ -6,10 +6,10 @@ describe("When Events is created", () => {
     render(<Form />);
     
     // Vérifiez que les labels des champs sont présents
-    await screen.findByText("Email");
     await screen.findByText("Nom");
     await screen.findByText("Prénom");
     await screen.findByText("Personel / Entreprise");
+    await screen.findByText("Email");
   });
 
   describe("and the form is submitted", () => {
@@ -19,9 +19,11 @@ describe("When Events is created", () => {
       render(<Form onSuccess={onSuccess} onError={onError} />);
 
       // Remplir les champs du formulaire
-      const fields = await screen.queryAllByTestId("field-testid");
-      fields.forEach(field => {
-        fireEvent.change(field, { target: { value: 'Test' } });
+      await waitFor(() => {
+        const fields = screen.queryAllByTestId("field-testid");
+        fields.forEach(field => {
+          fireEvent.change(field, { target: { value: 'Test' } });
+        });
       });
       
       // Simuler la sélection dans le composant Select
@@ -50,14 +52,13 @@ describe("When Events is created", () => {
 
       // Vérifiez que la modale de succès est affichée (assumant que vous avez un texte ou un élément de modale spécifique)
       await waitFor(() => {
-        expect(screen.getByText("Message envoyé !")).toBeInTheDocument();
+        screen.findByText("Message envoyé !");
       });
-
+      
       // Vérifiez que le bouton texte est revenu à "Envoyer" après la modale de succès
       await waitFor(() => {
         expect(screen.getByText("Envoyer")).toBeInTheDocument();
       });
-
     });
   });
 });

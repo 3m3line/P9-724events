@@ -92,7 +92,7 @@ const Form = ({ onSuccess, onError }) => {
   );
 
   return (
-    <form onSubmit={sendContact}>
+    <form onSubmit={sendContact} data-testid="form-testid">
       <div className="row">
         <div className="col">
           <Field

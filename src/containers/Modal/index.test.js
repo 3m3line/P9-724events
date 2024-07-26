@@ -17,7 +17,7 @@ describe("When Modal data is created", () => {
     it("the content of modal is displayed", async () => {
       render(
         <Modal Content={<div>modal content</div>}>
-          {() => <button data-testid="open-modal"></button>}
+          {() => <button data-testid="open-modal">" "</button>}
         </Modal>
       );
       expect(screen.queryByText("modal content")).not.toBeInTheDocument();
