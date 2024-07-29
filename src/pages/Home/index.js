@@ -13,15 +13,8 @@ import Modal from "../../containers/Modal";
 import { useData } from "../../contexts/DataContext";
 
 const Page = () => {
-  const {data, error} = useData();
-  if (!data || !data.events || data.events.length === 0) {
-    return <div>No events found.</div>;
-  }
-  if (error) {
-    console.error("Error loading data:", error);
-    return <div>Error loading data.</div>;
-  }
-  const last = data.events[data.events.length - 1];
+  const {data} = useData();
+  const last = data?.events?.[data.events.length - 1];
 
 
   return <>
@@ -126,13 +119,17 @@ const Page = () => {
     <footer className="row">
       <div className="col presta">
         <h3>Notre derniére prestation</h3>
-        <EventCard
-          imageSrc={last.cover}
-          title={last.title}
-          date={new Date(last.date)}
-          small
-          label="boom"
-        />
+        {last ? (
+              <EventCard
+                imageSrc={last.cover}
+                title={last.title}
+                date={new Date(last.date)}
+                small
+                label="boom"
+              />
+            ) : (
+              <p>Aucune prestation disponible pour le moment.</p>
+            )}
       </div>
       <div className="col contact">
         <h3>Contactez-nous</h3>

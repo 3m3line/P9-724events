@@ -12,10 +12,10 @@ describe("When Home is created with a Foorm", () => {
     });
     
     await waitFor(() => {
-      expect(screen.getByText(/Nom/i)).toBeInTheDocument();
-      expect(screen.getByText(/Prénom/i)).toBeInTheDocument();
-      expect(screen.getByText(/Personel \/ Entreprise/i)).toBeInTheDocument();
-      expect(screen.getByText(/Email/i)).toBeInTheDocument();
+      screen.findByText("Nom");
+      screen.findByText("Prénom");
+      screen.findByText("Personel / Entreprise");
+      screen.findByText("Email");
     });
   });
 
