@@ -13,25 +13,32 @@ const EventList = () => {
   const { data, error } = useData();
   const [type, setType] = useState();
   const [currentPage, setCurrentPage] = useState(1);
-  const filteredEvents = (
-    (!type
-      ? data?.events
-      : data?.events.filter(event => event.type === type)) || []
-  ).filter((event, index) => {
-    if (
-      (currentPage - 1) * PER_PAGE <= index &&
-      PER_PAGE * currentPage > index
-    ) {
-      return true;
-    }
-    return false;
-  });
+  const filteredEvents = (!type
+    ? data?.events
+    : data?.events.filter(event => event.type === type)) || [];
+
+  const paginatedEvents = filteredEvents.filter((event, index) => 
+    (currentPage - 1) * PER_PAGE <= index &&
+    PER_PAGE * currentPage > index
+  );
+
+  console.log("Data:", data);
+  console.log("Events:", data?.events);
+
   const changeType = (evtType) => {
     setCurrentPage(1);
     setType(evtType);
   };
-  const pageNumber = Math.ceil((filteredEvents.length || 0) / PER_PAGE);
+  const pageNumber = Math.ceil((filteredEvents?.length || 0) / PER_PAGE);
   const typeList = new Set(data?.events.map((event) => event.type));
+
+  console.log("Type:", type);
+  console.log("All Events:", data?.events);
+  console.log("Filtered Events:", filteredEvents);
+  console.log("Filtered Events Length:", filteredEvents.length);
+  console.log("PER_PAGE:", PER_PAGE);
+  console.log("Page Number:", pageNumber);
+
   return (
     <>
       {error && <div>An error occured</div>}
@@ -45,7 +52,7 @@ const EventList = () => {
             onChange={(value) => (value ? changeType(value) : changeType(null))}
           />
           <div id="events" className="ListContainer">
-            {filteredEvents.map((event) => (
+            {paginatedEvents.map((event) => (
               <Modal key={event.id} Content={<ModalEvent event={event} />}>
                 {({ setIsOpened }) => (
                   <EventCard
