@@ -55,11 +55,11 @@ const Page = () => {
         </div>
       </section>
       <section className="EventsContainer" id="nos-realisations">
-        <h2 className="Title">Nos réalisations</h2>
+        <h2 className="Title" data-testid="realisation-title">Nos réalisations</h2>
         <EventList />
       </section>
       <section className="PeoplesContainer" id="notre-equipe">
-        <h2 className="Title">Notre équipe</h2>
+        <h2 className="Title" data-testid="equipe-title">Notre équipe</h2>
         <p>Une équipe d’experts dédiés à l’ogranisation de vos événements</p>
         <div className="ListContainer">
           <PeopleCard
@@ -126,6 +126,7 @@ const Page = () => {
                 date={new Date(last.date)}
                 small
                 label="boom"
+                data-testid="last-event-card"
               />
             ) : (
               <p>Aucune prestation disponible pour le moment.</p>

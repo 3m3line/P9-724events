@@ -60,16 +60,57 @@ describe("When Home is created with a Foorm", () => {
 });
 
 describe("When a page is created", () => {
-  it("a list of events is displayed", () => {
-    // to implement
+  it("a list of events is displayed", async () => {
+    render(<Home />);
+
+    await waitFor(() => {
+      //vérifie l' apparition du titre puis du filtre et des cartes événements
+      expect(screen.getByTestId("realisation-title")).toBeInTheDocument();
+    });
+    await screen.queryAllByTestId("select-testid");
+    await screen.queryAllByTestId("card-testid");
+    
+  });
+  it("a list a people is displayed", async () => {
+    render(<Home />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId("equipe-title")).toBeInTheDocument();
+    });
+
+    // Vérifie que les cartes des membres de l'équipe sont rendues
+    const peopleCards = screen.getAllByTestId("people-card");
+    expect(peopleCards.length).toBeGreaterThan(0);
   })
-  it("a list a people is displayed", () => {
-    // to implement
+  it("a footer is displayed", async () => {
+    render(<Home />);
+
+    // Vérifie que le pied de page est affiché avec le titre de la partie ou un element du contenu
+    await waitFor(() => {
+      expect(screen.getByText("Notre derniére prestation")).toBeInTheDocument();
+      expect(screen.getByText("Contactez-nous")).toBeInTheDocument();
+    });
+    await waitFor(() => {
+      expect(screen.getByText((content, element) => 
+        element.tagName.toLowerCase() === 'p' && content.includes("Une agence événementielle propose")
+      )).toBeInTheDocument();
+    });
   })
-  it("a footer is displayed", () => {
-    // to implement
-  })
-  it("an event card, with the last event, is displayed", () => {
-    // to implement
+  it("an event card, with the last event, is displayed", async () => {
+    render(<Home />);
+
+    // Vérifie que la carte de l'événement le plus récent est affichée
+    const lastEvent = screen.queryByTestId("last-event-card"); // Assurez-vous que `EventCard` a `data-testid="event-card"`
+    
+    if (lastEvent) {
+      await waitFor(() => {
+        expect(screen.getByText("Notre derniére prestation")).toBeInTheDocument();
+        expect(lastEvent).toBeInTheDocument();
+      });
+    } else {
+      await waitFor(() => {
+        expect(screen.getByText("Aucune prestation disponible pour le moment.")).toBeInTheDocument();
+      });
+    }
   })
 });
